@@ -14,7 +14,7 @@
 * **Version Agnostic:** Works across all YouTube app versions (specifically tested and optimized for **v01.000.003** and **v01.000.030**).
 * **Complete Deep Patching:** Unlike basic blockers that only edit `appinfo.db`, this payload patches all 4 critical system locations simultaneously so the PS5 OS cannot restore the original state.
 * **All Jailbroken Firmwares:** Built with `ps5-payload-sdk`, ensuring full compatibility across all jailbroken PS5 firmwares.
-* **Instant Feedback:** Triggers a native PS5 system notification (`Done👍 / Coded by EPINOR`) upon completion.
+* **Instant Feedback:** Triggers a native PS5 system notification upon completion.
 
 ---
 
@@ -40,8 +40,7 @@ Simply modifying `appinfo.db` is not enough—once the console connects to the i
    nc -q 0 <PS5_IP> 9021 < YT-Blocker.elf
    ~~~
 4. Wait for the on-screen notification:
-   > **Done👍**
-   > **Coded by EPINOR**
+
 5. **Restart your PS5** for the database and metadata changes to take full effect.
 
 ---
