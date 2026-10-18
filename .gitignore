@@ -1,0 +1,21 @@
+# Compiled binaries and object files
+*.o
+*.d
+*.elf
+*.bin
+out/
+build/
+
+# Auto-fetched dependencies
+source/sqlite3.c
+include/sqlite3.h
+source/cJSON.c
+include/cJSON.h
+*.zip
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*~

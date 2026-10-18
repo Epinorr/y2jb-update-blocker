@@ -1,0 +1,49 @@
+name: Build YT-Blocker Payload
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies & PS5 SDK
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang lld wget unzip curl
+          wget -q https://github.com/ps5-payload-dev/sdk/releases/latest/download/ps5-payload-sdk.zip
+          sudo unzip -q -d /opt ps5-payload-sdk.zip
+
+      - name: Fetch SQLite3 & cJSON Sources
+        run: |
+          mkdir -p source include
+          if [ ! -f source/sqlite3.c ]; then
+            wget -q https://www.sqlite.org/2024/sqlite-amalgamation-3450200.zip
+            unzip -q -j sqlite-amalgamation-3450200.zip "*/sqlite3.c" -d source/
+            unzip -q -j sqlite-amalgamation-3450200.zip "*/sqlite3.h" -d include/
+          fi
+          if [ ! -f source/cJSON.c ]; then
+            curl -sL https://raw.githubusercontent.com/DaveGamble/cJSON/master/cJSON.c -o source/cJSON.c
+            curl -sL https://raw.githubusercontent.com/DaveGamble/cJSON/master/cJSON.h -o include/cJSON.h
+          fi
+
+      - name: Compile Payload
+        env:
+          PS5_PAYLOAD_SDK: /opt/ps5-payload-sdk
+        run: |
+          sed -i 's/^    /\t/' Makefile
+          make clean
+          make
+
+      - name: Upload ELF Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: YT-Blocker
+          path: YT-Blocker.elf
+          if-no-files-found: error
