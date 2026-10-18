@@ -1,16 +1,17 @@
+
 <div align="center">
+  <img src="assets/yt-blocker-banner.png" alt="YT-Blocker — Block YouTube Updates on PS5" width="100%">
 
-# YT-Blocker
+  ![Platform](https://img.shields.io/badge/Platform-PlayStation%205-003791?style=for-the-badge&logo=playstation)
+  ![Language](https://img.shields.io/badge/Language-C-A8B9CC?style=for-the-badge&logo=c)
+  ![License](https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge&logo=gnu)
 
-**A PlayStation 5 payload for blocking YouTube update metadata**
+  **A PlayStation 5 payload for blocking YouTube updates**
 
-![Platform](https://img.shields.io/badge/Platform-PlayStation%205-003791?style=for-the-badge&logo=playstation)
-![Language](https://img.shields.io/badge/Language-C-A8B9CC?style=for-the-badge&logo=c)
-![License](https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge&logo=gnu)
-
-[**Download Latest Release**](../../releases/latest)
-
+  [Download Latest Release](../../releases/latest)
 </div>
+
+---
 
 ---
 
