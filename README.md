@@ -2,7 +2,7 @@
 
 ![Platform](https://img.shields.io/badge/Platform-PS5-003791?style=for-the-badge&logo=playstation)
 ![Language](https://img.shields.io/badge/Language-C-A8B9CC?style=for-the-badge&logo=c)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)
 
 **YT-Blocker** is an automated, lightweight PlayStation 5 ELF payload designed for **Y2JB (YouTube Jailbreak)** users. It permanently prevents the PS5 YouTube application from auto-updating or resetting its metadata when connecting to the internet, protecting your console from softlocks and forced updates.
 
@@ -14,7 +14,7 @@
 * **Version Agnostic:** Works across all YouTube app versions (specifically tested and optimized for **v01.000.003** and **v01.000.030**).
 * **Complete Deep Patching:** Unlike basic blockers that only edit `appinfo.db`, this payload patches all 4 critical system locations simultaneously so the PS5 OS cannot restore the original state.
 * **All Jailbroken Firmwares:** Built with `ps5-payload-sdk`, ensuring full compatibility across all jailbroken PS5 firmwares.
-* **Instant Feedback:** Triggers a native PS5 system notification upon completion.
+* **Instant Feedback:** Triggers a native PS5 system notification (`Done👍 / Coded by EPINOR`) upon completion.
 
 ---
 
@@ -36,11 +36,12 @@ Simply modifying `appinfo.db` is not enough—once the console connects to the i
 1. Download the latest **`YT-Blocker.elf`** from the [Releases](../../releases) page (or from the **Actions** build artifacts).
 2. Make sure YouTube (`PPSA01650` or `PPSA01651`) is installed on your PS5 and **closed**.
 3. Send `YT-Blocker.elf` to your PS5 using your preferred ELF loader (e.g., via Netcat on port `9021`):
-   ```bash
+   ~~~bash
    nc -q 0 <PS5_IP> 9021 < YT-Blocker.elf
-   ```
+   ~~~
 4. Wait for the on-screen notification:
-
+   > **Done👍**
+   > **Coded by EPINOR**
 5. **Restart your PS5** for the database and metadata changes to take full effect.
 
 ---
@@ -55,10 +56,10 @@ This repository includes a pre-configured GitHub Actions workflow (`.github/work
 
 ### Local Build
 If you want to compile it locally on Linux:
-```bash
+~~~bash
 export PS5_PAYLOAD_SDK=/opt/ps5-payload-sdk
 make clean && make
-```
+~~~
 
 ---
 
@@ -67,3 +68,9 @@ make clean && make
 * **[EPINOR](https://github.com/EPINOR)** — Payload creator & developer.
 * **[SvenGDK](https://gist.github.com/SvenGDK/6525ec4af64e45a847e35af45da46ab4)** — Research and discovery of the complete Y2JB YouTube update block method.
 * **[John Törnblom](https://github.com/ps5-payload-dev)** — For the `ps5-payload-sdk` toolchain.
+
+---
+
+## 📄 License
+
+This project is licensed under the **GNU General Public License v3.0 (GPL-3.0)** — see the [LICENSE](LICENSE) file for details.
