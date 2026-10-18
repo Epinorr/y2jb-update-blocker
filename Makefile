@@ -5,7 +5,7 @@ TARGET := YT-Blocker.elf
 SRCS := source/main.c source/sqlite3.c source/cJSON.c
 OBJS := $(SRCS:.c=.o)
 
-CFLAGS += -O2 -Iinclude \
+CFLAGS += -std=c11 -O2 -Wall -Wextra -Iinclude \
           -DSQLITE_THREADSAFE=0 \
           -DSQLITE_OMIT_LOAD_EXTENSION=1 \
           -DSQLITE_ENABLE_JSON1 \
@@ -18,3 +18,5 @@ $(TARGET): $(OBJS)
 
 clean:
 	rm -f $(TARGET) $(OBJS)
+
+.PHONY: all clean

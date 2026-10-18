@@ -19,3 +19,6 @@ include/cJSON.h
 .DS_Store
 Thumbs.db
 *~
+# Test binaries and temporary files
+*.test
+*.tmp

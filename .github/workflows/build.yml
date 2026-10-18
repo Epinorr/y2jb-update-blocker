@@ -8,40 +8,46 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Dependencies & PS5 SDK
+      - name: Install build tools and PS5 SDK
+        shell: bash
         run: |
+          set -euo pipefail
           sudo apt-get update
           sudo apt-get install -y build-essential clang lld wget unzip curl
           wget -q https://github.com/ps5-payload-dev/sdk/releases/latest/download/ps5-payload-sdk.zip
           sudo unzip -q -d /opt ps5-payload-sdk.zip
+          test -f /opt/ps5-payload-sdk/toolchain/prospero.mk
 
-      - name: Fetch SQLite3 & cJSON Sources
+      - name: Fetch SQLite3 and cJSON sources
+        shell: bash
         run: |
+          set -euo pipefail
           mkdir -p source include
-          if [ ! -f source/sqlite3.c ]; then
-            wget -q https://www.sqlite.org/2024/sqlite-amalgamation-3450200.zip
-            unzip -q -j sqlite-amalgamation-3450200.zip "*/sqlite3.c" -d source/
-            unzip -q -j sqlite-amalgamation-3450200.zip "*/sqlite3.h" -d include/
-          fi
-          if [ ! -f source/cJSON.c ]; then
-            curl -sL https://raw.githubusercontent.com/DaveGamble/cJSON/master/cJSON.c -o source/cJSON.c
-            curl -sL https://raw.githubusercontent.com/DaveGamble/cJSON/master/cJSON.h -o include/cJSON.h
-          fi
+          wget -q https://www.sqlite.org/2024/sqlite-amalgamation-3450200.zip
+          unzip -q -j sqlite-amalgamation-3450200.zip "*/sqlite3.c" -d source/
+          unzip -q -j sqlite-amalgamation-3450200.zip "*/sqlite3.h" -d include/
+          curl -fsSL https://raw.githubusercontent.com/DaveGamble/cJSON/master/cJSON.c -o source/cJSON.c
+          curl -fsSL https://raw.githubusercontent.com/DaveGamble/cJSON/master/cJSON.h -o include/cJSON.h
+          test -s source/sqlite3.c
+          test -s include/sqlite3.h
+          test -s source/cJSON.c
+          test -s include/cJSON.h
 
-      - name: Compile Payload
+      - name: Compile payload
         env:
           PS5_PAYLOAD_SDK: /opt/ps5-payload-sdk
+        shell: bash
         run: |
-          sed -i 's/^    /\t/' Makefile
+          set -euo pipefail
           make clean
           make
+          test -s YT-Blocker.elf
 
-      - name: Upload ELF Artifact
+      - name: Upload ELF artifact
         uses: actions/upload-artifact@v4
         with:
           name: YT-Blocker

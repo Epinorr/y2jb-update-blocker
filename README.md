@@ -1,75 +1,65 @@
-# 🛡️ PS5 YT-Blocker Payload
+<div align="center">
 
-![Platform](https://img.shields.io/badge/Platform-PS5-003791?style=for-the-badge&logo=playstation)
+# YT-Blocker
+
+**A PlayStation 5 payload for blocking YouTube update metadata**
+
+![Platform](https://img.shields.io/badge/Platform-PlayStation%205-003791?style=for-the-badge&logo=playstation)
 ![Language](https://img.shields.io/badge/Language-C-A8B9CC?style=for-the-badge&logo=c)
-![License](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/License-GPL--3.0-blue?style=for-the-badge&logo=gnu)
 
-**YT-Blocker** is an automated, lightweight PlayStation 5 ELF payload designed for **Y2JB (YouTube Jailbreak)** users. It permanently prevents the PS5 YouTube application from auto-updating or resetting its metadata when connecting to the internet, protecting your console from softlocks and forced updates.
+[**Download Latest Release**](../../releases/latest)
 
----
-
-## ✨ Features
-
-* **Multi-Region Support:** Automatically detects and patches both **`PPSA01650`** and **`PPSA01651`** Title IDs.
-* **Version Agnostic:** Works across all YouTube app versions (specifically tested and optimized for **v01.000.003** and **v01.000.030**).
-* **Complete Deep Patching:** Unlike basic blockers that only edit `appinfo.db`, this payload patches all 4 critical system locations simultaneously so the PS5 OS cannot restore the original state.
-* **All Jailbroken Firmwares:** Built with `ps5-payload-sdk`, ensuring full compatibility across all jailbroken PS5 firmwares.
-* **Instant Feedback:** Triggers a native PS5 system notification upon completion.
+</div>
 
 ---
 
-## 🔧 How It Works (Technical Overview)
+YT-Blocker modifies YouTube's application metadata on supported PS5 setups in an attempt to prevent the console from applying a YouTube update.
 
-Simply modifying `appinfo.db` is not enough—once the console connects to the internet without a DNS block, the system refreshes the app state and overwrites the changes. **YT-Blocker** resolves this by spoofing the version to `99.999.999` and redirecting the update URI to `http://127.0.0.2` across all four system locations:
+## Download
 
-| Target File / Database | Path | Patched Keys / Columns |
-| :--- | :--- | :--- |
-| **`appinfo.db`** | `/system_data/priv/mms/appinfo.db` | `CONTENT_VERSION` & `VERSION_FILE_URI` in `tbl_appinfo` |
-| **`app.db`** | `/system_data/priv/mms/app.db` | `$.CONTENT_VERSION` & `$.VERSION_FILE_URI` inside `AppInfoJson` (`tbl_contentinfo`) |
-| **System `param.json`** | `/system_data/priv/appmeta/{TITLE_ID}/param.json` | `contentVersion` & `versionFileUri` |
-| **User `param.json`** | `/user/appmeta/{TITLE_ID}/param.json` | `contentVersion` & `versionFileUri` |
+1. Open **[Releases](../../releases)**.
+2. Select the latest release.
+3. Under **Assets**, download **`YT-Blocker.elf`**.
+4. Send the ELF payload to your PS5 using a payload loader compatible with your setup.
 
----
+**Most users only need the release ELF.** You do not need to download the source code or build the project yourself.
 
-## 🚀 Usage Instructions
+## Before you use it
 
-1. Download the latest **`YT-Blocker.elf`** from the [Releases](../../releases) page (or from the **Actions** build artifacts).
-2. Make sure YouTube (`PPSA01650` or `PPSA01651`) is installed on your PS5 and **closed**.
-3. Send `YT-Blocker.elf` to your PS5 using your preferred ELF loader (e.g., via Netcat on port `9021`):
-   ~~~bash
-   nc -q 0 <PS5_IP> 9021 < YT-Blocker.elf
-   ~~~
-4. Wait for the on-screen notification:
+> [!WARNING]
+> This payload modifies system databases and application metadata. Back up the original files before running it. Incorrect or partial changes may cause problems with the YouTube application.
 
-5. **Restart your PS5** for the database and metadata changes to take full effect.
+- Close YouTube before running the payload.
+- Do not run it while YouTube is installing or updating.
+- A “Done” notification does **not** guarantee that updates are blocked. Verify the result on your console.
+- Compatibility can vary by firmware, YouTube version, title ID, and payload environment. It has not been verified on every configuration.
 
----
+## Supported YouTube title IDs
 
-## 🛠️ Building from Source
+- `PPSA01650`
+- `PPSA01651`
+- `PPSA01652`
 
-### Automated Build (GitHub Actions)
-This repository includes a pre-configured GitHub Actions workflow (`.github/workflows/build.yml`). Every push to the `main` branch automatically:
-1. Installs the latest `ps5-payload-sdk`.
-2. Fetches the required `SQLite3` (with `JSON1` enabled) and `cJSON` amalgamation sources.
-3. Compiles and packages `YT-Blocker.elf` as a downloadable artifact.
+## What it changes
 
-### Local Build
-If you want to compile it locally on Linux:
-~~~bash
-export PS5_PAYLOAD_SDK=/opt/ps5-payload-sdk
-make clean && make
-~~~
+YT-Blocker attempts to set the following metadata values:
 
----
+| Field | Target value |
+| --- | --- |
+| Content version | `99.999.999` |
+| Version file URI | `http://127.0.0.2` |
 
-## 👏 Credits
+The payload updates relevant entries in the PS5 application databases and YouTube `param.json` metadata. These changes alone may not be sufficient if the system restores its metadata or update services remain reachable.
 
-* **[EPINOR](https://github.com/EPINOR)** — Payload creator & developer.
-* **[SvenGDK](https://gist.github.com/SvenGDK/6525ec4af64e45a847e35af45da46ab4)** — Research and discovery of the complete Y2JB YouTube update block method.
-* **[John Törnblom](https://github.com/ps5-payload-dev)** — For the `ps5-payload-sdk` toolchain.
+YT-Blocker does **not** configure DNS or change your network settings.
 
----
+## Credits
 
-## 📄 License
+- [EPINOR](https://github.com/EPINOR) — project and payload
+- [SvenGDK](https://gist.github.com/SvenGDK/6525ec4af64e45a847e35af45da46ab4) — YouTube metadata-blocking method
+- [PS5 Payload SDK](https://github.com/ps5-payload-dev) — payload development tools
 
-This project is licensed under the **GNU General Public License v3.0 (GPL-3.0)** — see the [LICENSE](LICENSE) file for details.
+## License
+
+YT-Blocker is distributed under the [GNU General Public License v3.0](LICENSE).
