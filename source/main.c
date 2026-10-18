@@ -694,7 +694,7 @@ int main(void)
         result_set(&results[i].user_param, STAGE_MISSING, 0, 0, "file not present");
     }
 
-    notify_message("YT-Blocker started\nChecking YouTube metadata...");
+    /* Keep the payload silent until the final result notification. */
 
     make_target_path(appinfo_path, sizeof(appinfo_path), "/system_data/priv/mms/appinfo.db");
     make_target_path(appdb_path, sizeof(appdb_path), "/system_data/priv/mms/app.db");
@@ -780,7 +780,7 @@ int main(void)
                     "Do not assume update blocking is active.\n");
     }
     append_text(report, sizeof(report), "Coded by EPINOR");
-    notify_message("%s", report);
+    notify_message("Done👍\nCoded By EPINOR");
 
     if (found_titles == 0) return 2;
     if (incomplete_titles != 0) return 1;
